@@ -1,44 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-
-type IPokemonDimension = {
-  minimum: number,
-  maximum: number
-}
-
-type IAttack = {
-  name: string,
-  type: string,
-  damage: number
-}
-
-type IPokemonAttack = {
-  fast: [IAttack],
-  special: [IAttack]
-}
-
-type IPokemonEvolutionRequirement = {
-  amount: number,
-  name: string
-}
-
-type IPokemon = {
-  id: string | number,
-  number: string,
-  name: string,
-  weight: IPokemonDimension,
-  height: IPokemonDimension,
-  classification: string,
-  types: [string],
-  resistant: [string],
-  attacks: IPokemonAttack,
-  weaknesses: [string],
-  fleeRate: number,
-  maxCP: number,
-  evolutions: [IPokemon],
-  evolutionRequirements: IPokemonEvolutionRequirement,
-  maxHP: number,
-  image: string
-}
+import { IPokemon } from '../interfaces/pokemon'
 
 const GET_POKEMONS = gql`
   query Pokemons {
