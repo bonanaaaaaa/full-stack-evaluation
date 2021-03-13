@@ -1,6 +1,13 @@
+import { ApolloProvider } from '@apollo/client';
+import { client } from './graphql'
+
+import Index from './pages/Index'
+
 function App() {
   return (
-    <div></div>
+    <ApolloProvider client={client}>
+      <Index />
+    </ApolloProvider>
   );
 }
 
