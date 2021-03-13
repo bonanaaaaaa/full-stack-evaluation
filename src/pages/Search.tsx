@@ -6,8 +6,8 @@ import useQueryParams from '../hooks/useQueryParams'
 import { useHistory } from 'react-router'
 
 
-const GET_POKEMON = gql`
-  query Pokemon($name: String!) {
+export const GET_POKEMON_QUERY = gql`
+  query pokemon($name: String!) {
     pokemon(name: $name) {
       id
       number
@@ -33,7 +33,7 @@ const GET_POKEMON = gql`
 `
 
 function SearchResult({ name }: { name: string }) {
-  const {data, loading, error} = useQuery<{pokemon: IPokemon}>(GET_POKEMON, {
+  const {data, loading, error} = useQuery<{pokemon: IPokemon}>(GET_POKEMON_QUERY, {
     variables: { name }
   })
 
@@ -55,6 +55,7 @@ function SearchResult({ name }: { name: string }) {
   return (
     <div>
       {pokemon.name}
+      {pokemon.types.join(", ")}
     </div>
   )
 }
@@ -80,7 +81,7 @@ function SearchText({ initialValue } : { initialValue: string }) {
     <div>
       <form onSubmit={handleSubmit}>
         <label>Search: </label>
-        <input type="text" onChange={handleChange} value={value} />
+        <input type="text" aria-label="name-input" onChange={handleChange} value={value} />
         <input type="submit" value="Search" />
       </form>
     </div>
