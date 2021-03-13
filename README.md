@@ -1,57 +1,46 @@
-# OneWork Full Stack Evaluation
+# Getting Started with Create React App
 
-This evaluation will have two three components:
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-- Testing & Typescript
-- Front End
-- Communication
+## Available Scripts
 
-### Testing & Typescript
+In the project directory, you can run:
 
-#### Requirements
+### `yarn start`
 
-Use [create react app](https://reactjs.org/docs/create-a-new-react-app.html) to create a typescript front-end application named `search-pokemon`.
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Using the schema definition for `pokemon` found [here](https://wayfair.github.io/dociql/#definition-Pokemon) create a Pokemon Typescript interface.
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-The Pokemon interface should account for pokemon attacks and evolutions as described by the schema definitions.
+### `yarn test`
 
-In the same application create a test file named `pokemon-types` that will be run by the included [jest framework](https://jestjs.io/).
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Create test mocks for Bulbasaur, Charmander, and Squirtle pokemon.
+### `yarn build`
 
-Write a test suite that uses typeguards to assert that each pokemon is the correct type (Grass, Fire, Water).
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-### Front End
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-The `search-pokemon` application will use a [pokemon graphql api](https://wayfair.github.io/dociql/) hosted [here](https://graphql-pokemon2.vercel.app) as a datasource. The schema definition and methods required for this task are found in the [pokemon graphql api](https://wayfair.github.io/dociql/). You may use any graphql client you like.
+### `yarn eject`
 
-Make use of the [Graphiql Debugger](https://graphql-pokemon2.vercel.app) when working with the api, it will make building your queries much easier.
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-#### Requirements
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-A search input component that searches the pokemon api by name. This component should also read the state of a search query param.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-A result component that displays all of information about the found pokemon or a not found view.
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-The pokemon result should also contain that attacks and evolutions of that pokemon.
+## Learn More
 
-Clicking on the name of an evolution should update the search query param and show the result of the evolution.
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-There is no design requirement, but all results should be easy to read and well organized.
-
-### Communication
-
-Please fork this repo and submit your evaluation as a pull request. If you have any questions or would like additional clarification on a requirement please use the github issues or comment on your pull request.
-
-It is easier to help if you create a draft pull request when beginning the evalation.
-
-When completed you should mark the pull request as ready to merge and we will review it together.
-
-
-
-
-
-
-
+To learn React, check out the [React documentation](https://reactjs.org/).
