@@ -71,7 +71,7 @@ function SearchText({ initialValue } : { initialValue: string }) {
     e.preventDefault()
 
     history.push({
-      pathname: '/search',
+      pathname: '/',
       search: `?name=${value}`
     })
   }

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import { client } from './graphql'
 
-import Index from './pages/Index'
 import Search from './pages/Search'
 
 function App() {
@@ -11,10 +10,7 @@ function App() {
     <Router>
       <ApolloProvider client={client}>
         <Switch>
-          <Route exact path="/">
-            <Index />
-          </Route>
-          <Route path="/search">
+          <Route path="/">
             <Search />
           </Route>
         </Switch>
