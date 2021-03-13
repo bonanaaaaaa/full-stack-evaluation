@@ -1,7 +1,4 @@
-import { ApolloProvider } from '@apollo/client';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-
-
+import { Switch, Route } from 'react-router-dom'
 
 import Search from './pages/Search'
 

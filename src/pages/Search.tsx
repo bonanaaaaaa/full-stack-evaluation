@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { gql, useQuery } from '@apollo/client'
 
 import { IPokemon } from '../interfaces/pokemon'
@@ -88,7 +88,7 @@ function SearchText({ initialValue } : { initialValue: string }) {
   )
 }
 
-export default function () {
+export default function Search() {
   const query = useQueryParams()
   const name = query.get('name')
 
