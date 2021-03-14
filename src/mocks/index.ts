@@ -1,50 +1,49 @@
-import { GET_POKEMON_QUERY } from '../pages/Search'
-import bulbasaur from './bulbasaur.json'
-import squirtle from './squirtle.json'
-import charmander from './charmander.json'
-
+import { GET_POKEMON_QUERY } from "../pages/Search";
+import bulbasaur from "./bulbasaur.json";
+import squirtle from "./squirtle.json";
+import charmander from "./charmander.json";
 
 const mocks = [
   {
     request: {
       query: GET_POKEMON_QUERY,
       variables: {
-        name: "Bulbasaur"
-      }
+        name: "Bulbasaur",
+      },
     },
-    result: bulbasaur
+    result: bulbasaur,
   },
   {
     request: {
       query: GET_POKEMON_QUERY,
       variables: {
-        name: "Charmander"
-      }
+        name: "Charmander",
+      },
     },
-    result: charmander
+    result: charmander,
   },
   {
     request: {
       query: GET_POKEMON_QUERY,
       variables: {
-        name: "Squirtle"
-      }
+        name: "Squirtle",
+      },
     },
-    result: squirtle
+    result: squirtle,
   },
   {
     request: {
       query: GET_POKEMON_QUERY,
       variables: {
-        name: "unknown"
-      }
+        name: "unknown",
+      },
     },
     result: {
       data: {
-        pokemon: null
-      }
-    }
+        pokemon: null,
+      },
+    },
   },
 ];
 
-export default mocks
+export default mocks;

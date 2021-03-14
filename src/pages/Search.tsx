@@ -1,27 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { gql, useLazyQuery } from '@apollo/client'
+import React, { useContext, useEffect, useState } from "react";
+import { gql, useLazyQuery } from "@apollo/client";
 
 import {
   Container,
-   Grid,
-   Box,
-   Input,
-   CircularProgress,
-   Card,
-   CardMedia,
-   CardContent,
-   Typography,
-   Avatar,
-   Button,
-   useTheme,
-} from '@material-ui/core'
+  Grid,
+  Box,
+  Input,
+  CircularProgress,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Avatar,
+  Button,
+  useTheme,
+} from "@material-ui/core";
 
-import { IPokemon } from '../interfaces/pokemon'
-import useQueryParams from '../hooks/useQueryParams'
-import ThemeTypeContext from '../contexts/ThemeTypeContext'
-import { useHistory, useLocation } from 'react-router'
-import { Link } from 'react-router-dom'
-
+import { IPokemon } from "../interfaces/pokemon";
+import useQueryParams from "../hooks/useQueryParams";
+import ThemeTypeContext from "../contexts/ThemeTypeContext";
+import { useHistory, useLocation } from "react-router";
+import { Link } from "react-router-dom";
 
 export const GET_POKEMON_QUERY = gql`
   query pokemon($name: String!) {
@@ -55,40 +54,42 @@ export const GET_POKEMON_QUERY = gql`
       }
     }
   }
-`
+`;
 
 export default function Search() {
-  const query = useQueryParams()
-  const history = useHistory()
-  const location = useLocation()
-  const [searchTextValue, setSearchTextValue] = useState("")
-  const [searchValue, setSearchValue] = useState("")
-  const {themeType, toggleThemeType} = useContext(ThemeTypeContext)
+  const query = useQueryParams();
+  const history = useHistory();
+  const location = useLocation();
+  const [searchTextValue, setSearchTextValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const { themeType, toggleThemeType } = useContext(ThemeTypeContext);
 
-  const [fetch, {called, data, error, loading}] = useLazyQuery<{pokemon: IPokemon}>(GET_POKEMON_QUERY, {
-    variables: { name: searchValue }
-  })
+  const [fetch, { called, data, error, loading }] = useLazyQuery<{
+    pokemon: IPokemon;
+  }>(GET_POKEMON_QUERY, {
+    variables: { name: searchValue },
+  });
 
   useEffect(() => {
-    const queryValue = query.get('name')
+    const queryValue = query.get("name");
     if (queryValue) {
-      setSearchTextValue(queryValue)
-      setSearchValue(queryValue)
-      fetch()
+      setSearchTextValue(queryValue);
+      setSearchValue(queryValue);
+      fetch();
     }
-  }, [location])
+  }, [location]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearchTextValue(e.target.value)
+    setSearchTextValue(e.target.value);
   }
 
   function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (searchTextValue !== searchValue) {
-      history.push(`/?name=${searchTextValue}`)
+      history.push(`/?name=${searchTextValue}`);
     }
-    setSearchValue(searchTextValue)
+    setSearchValue(searchTextValue);
   }
 
   function renderSearchText() {
@@ -97,7 +98,7 @@ export default function Search() {
         <Input
           type="text"
           name="search"
-          inputProps={{'aria-label': 'name-input'}}
+          inputProps={{ "aria-label": "name-input" }}
           onChange={handleChange}
           placeholder="Pokemon name"
           value={searchTextValue}
@@ -106,18 +107,16 @@ export default function Search() {
         <Input
           type="submit"
           value="Search"
-          inputProps={{'aria-label': 'search-button'}}
+          inputProps={{ "aria-label": "search-button" }}
           disabled={loading}
         />
       </form>
-    )
+    );
   }
 
   function renderSearchResult() {
     if (!called) {
-      return (
-        <div>Input pokemon name to search</div>
-      )
+      return <div>Input pokemon name to search</div>;
     }
 
     if (loading) {
@@ -126,18 +125,18 @@ export default function Search() {
           Searching...
           <CircularProgress />
         </Box>
-      )
+      );
     }
 
     if (error) {
-      return <div>error</div>
+      return <div>error</div>;
     }
 
     if (!data || !data.pokemon) {
-      return <div>Not found</div>
+      return <div>Not found</div>;
     }
 
-    const { pokemon } = data
+    const { pokemon } = data;
 
     return (
       <Box>
@@ -146,10 +145,10 @@ export default function Search() {
           {pokemon.name}
         </Typography>
         <Typography variant="body2" component="p">
-          Types: {pokemon.types?.join(' ') || ""}
+          Types: {pokemon.types?.join(" ") || ""}
         </Typography>
         <Typography variant="body2" component="p">
-          Resistant(s): {pokemon.resistant?.join(' ') || ""}
+          Resistant(s): {pokemon.resistant?.join(" ") || ""}
         </Typography>
         <Typography variant="body2" component="p">
           FleeRate: {pokemon.fleeRate || ""}
@@ -158,10 +157,10 @@ export default function Search() {
           MaxCP: {pokemon.maxCP || ""}
         </Typography>
         <Typography variant="body2" component="p">
-          Weakness(es): {pokemon.weaknesses?.join(' ') || '-'}
+          Weakness(es): {pokemon.weaknesses?.join(" ") || "-"}
         </Typography>
         <Typography variant="body2" component="p">
-          Classification: {pokemon.classification || '-'}
+          Classification: {pokemon.classification || "-"}
         </Typography>
         <Typography variant="body2" component="p">
           Weight: {`${pokemon.weight?.minimum} - ${pokemon.weight?.maximum}`}
@@ -170,20 +169,29 @@ export default function Search() {
           Height: {`${pokemon.height?.minimum} - ${pokemon.height?.maximum}`}
         </Typography>
         <Typography variant="body2" component="p">
-          Evolution Requirement: {`${pokemon.evolutionRequirements?.amount || ''} ${pokemon.evolutionRequirements?.name || ''}`}
+          Evolution Requirement:{" "}
+          {`${pokemon.evolutionRequirements?.amount || ""} ${
+            pokemon.evolutionRequirements?.name || ""
+          }`}
         </Typography>
         <Typography variant="body2" component="div">
           <Grid container>
             Evolution(s):
             {pokemon.evolutions?.map((evolution, i) => (
-              <Link key={`evolution-${evolution?.name}-${i}`} to={`/?name=${evolution.name}`} >
-                <Avatar alt={evolution.name || ""} src={evolution.image || ""} />
+              <Link
+                key={`evolution-${evolution?.name}-${i}`}
+                to={`/?name=${evolution.name}`}
+              >
+                <Avatar
+                  alt={evolution.name || ""}
+                  src={evolution.image || ""}
+                />
               </Link>
             )) || " -"}
           </Grid>
         </Typography>
       </Box>
-    )
+    );
   }
 
   return (
@@ -192,5 +200,5 @@ export default function Search() {
       {renderSearchText()}
       {renderSearchResult()}
     </Container>
-  )
+  );
 }

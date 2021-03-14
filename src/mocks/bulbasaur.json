@@ -13,23 +13,9 @@
         "maximum": "0.79m"
       },
       "classification": "Seed Pokémon",
-      "types": [
-        "Grass",
-        "Poison"
-      ],
-      "resistant": [
-        "Water",
-        "Electric",
-        "Grass",
-        "Fighting",
-        "Fairy"
-      ],
-      "weaknesses": [
-        "Fire",
-        "Ice",
-        "Flying",
-        "Psychic"
-      ],
+      "types": ["Grass", "Poison"],
+      "resistant": ["Water", "Electric", "Grass", "Fighting", "Fairy"],
+      "weaknesses": ["Fire", "Ice", "Flying", "Psychic"],
       "fleeRate": 0.1,
       "maxCP": 951,
       "maxHP": 1071,

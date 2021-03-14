@@ -13,19 +13,9 @@
         "maximum": "0.56m"
       },
       "classification": "Tiny Turtle Pokémon",
-      "types": [
-        "Water"
-      ],
-      "resistant": [
-        "Fire",
-        "Water",
-        "Ice",
-        "Steel"
-      ],
-      "weaknesses": [
-        "Electric",
-        "Grass"
-      ],
+      "types": ["Water"],
+      "resistant": ["Fire", "Water", "Ice", "Steel"],
+      "weaknesses": ["Electric", "Grass"],
       "fleeRate": 0.1,
       "maxCP": 891,
       "maxHP": 1008,

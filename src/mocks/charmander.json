@@ -13,22 +13,9 @@
         "maximum": "0.68m"
       },
       "classification": "Lizard Pokémon",
-      "types": [
-        "Fire"
-      ],
-      "resistant": [
-        "Fire",
-        "Grass",
-        "Ice",
-        "Bug",
-        "Steel",
-        "Fairy"
-      ],
-      "weaknesses": [
-        "Water",
-        "Ground",
-        "Rock"
-      ],
+      "types": ["Fire"],
+      "resistant": ["Fire", "Grass", "Ice", "Bug", "Steel", "Fairy"],
+      "weaknesses": ["Water", "Ground", "Rock"],
       "fleeRate": 0.1,
       "maxCP": 841,
       "maxHP": 955,
