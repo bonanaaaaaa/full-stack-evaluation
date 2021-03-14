@@ -7,13 +7,9 @@ import {
   Box,
   Input,
   CircularProgress,
-  Card,
-  CardMedia,
-  CardContent,
   Typography,
   Avatar,
   Button,
-  useTheme,
 } from "@material-ui/core";
 
 import { IPokemon } from "../interfaces/pokemon";
@@ -60,6 +56,7 @@ export default function Search() {
   const query = useQueryParams();
   const history = useHistory();
   const location = useLocation();
+  const queryValue = query.get("name");
   const [searchTextValue, setSearchTextValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const { themeType, toggleThemeType } = useContext(ThemeTypeContext);
@@ -71,13 +68,12 @@ export default function Search() {
   });
 
   useEffect(() => {
-    const queryValue = query.get("name");
     if (queryValue) {
       setSearchTextValue(queryValue);
       setSearchValue(queryValue);
       fetch();
     }
-  }, [location]);
+  }, [location, fetch, queryValue]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchTextValue(e.target.value);

@@ -1,7 +1,7 @@
-import { useMediaQuery, createMuiTheme, PaletteType } from "@material-ui/core";
-import React, { useState, useMemo, useContext } from "react";
+import { createContext } from "react";
+import { PaletteType } from "@material-ui/core";
 
-const ThemeTypeContext = React.createContext({
+const ThemeTypeContext = createContext({
   themeType: "light" as PaletteType,
   toggleThemeType: () => {},
 });
