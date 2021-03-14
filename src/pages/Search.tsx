@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import { gql, useQuery } from '@apollo/client'
+import React, { useEffect, useState } from 'react'
+import { gql, useLazyQuery } from '@apollo/client'
+
+import { Container, Grid, Box, Input, FormLabel, CircularProgress } from '@material-ui/core'
 
 import { IPokemon } from '../interfaces/pokemon'
 import useQueryParams from '../hooks/useQueryParams'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 
 
 export const GET_POKEMON_QUERY = gql`
@@ -32,76 +34,100 @@ export const GET_POKEMON_QUERY = gql`
   }
 `
 
-function SearchResult({ name }: { name: string }) {
-  const {data, loading, error} = useQuery<{pokemon: IPokemon}>(GET_POKEMON_QUERY, {
-    variables: { name }
+export default function Search() {
+  const query = useQueryParams()
+  const history = useHistory()
+  const location = useLocation()
+  const [searchTextValue, setSearchTextValue] = useState("")
+  const [searchValue, setSearchValue] = useState("")
+
+  const [fetch, {called, data, error, loading}] = useLazyQuery<{pokemon: IPokemon}>(GET_POKEMON_QUERY, {
+    variables: { name: searchValue }
   })
 
-  if (loading) {
-    return <div>Searching...</div>
-  }
-
-  if (error) {
-    console.log(error)
-    return <div>error</div>
-  }
-
-  if (!data || !data.pokemon) {
-    return <div>Not found</div>
-  }
-
-  const {pokemon} = data
-
-  return (
-    <div>
-      {pokemon.name}
-      {pokemon.types.join(", ")}
-    </div>
-  )
-}
-
-function SearchText({ initialValue } : { initialValue: string }) {
-  const [value, setValue] = useState(initialValue)
-  const history = useHistory()
+  useEffect(() => {
+    const queryValue = query.get('name')
+    if (queryValue) {
+      setSearchTextValue(queryValue)
+      setSearchValue(queryValue)
+      fetch()
+    }
+  }, [location])
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setValue(e.target.value)
+    setSearchTextValue(e.target.value)
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    history.push({
-      pathname: '/',
-      search: `?name=${value}`
-    })
+    if (searchTextValue !== searchValue) {
+      history.push(`/?name=${searchTextValue}`)
+    }
+    setSearchValue(searchTextValue)
   }
 
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>Search: </label>
-        <input type="text" aria-label="name-input" onChange={handleChange} value={value} />
-        <input type="submit" value="Search" />
-      </form>
-    </div>
-  )
-}
-
-export default function Search() {
-  const query = useQueryParams()
-  const name = query.get('name')
-
-  if (!name) {
+  function renderSearchText() {
     return (
-      <SearchText initialValue={""} />
+      <form onSubmit={handleSubmit}>
+        <Input
+          type="text"
+          name="search"
+          inputProps={{'aria-label': 'name-input'}}
+          onChange={handleChange}
+          placeholder="Pokemon name"
+          value={searchTextValue}
+          disabled={loading}
+        />
+        <Input
+          type="submit"
+          value="Search"
+          inputProps={{'aria-label': 'search-button'}}
+          disabled={loading}
+        />
+      </form>
+    )
+  }
+
+  function renderSearchResult() {
+    if (!called) {
+      return (
+        <div>Input pokemon name to search</div>
+      )
+    }
+
+    if (loading) {
+      return (
+        <Box>
+          Searching...
+          <CircularProgress />
+        </Box>
+      )
+    }
+
+    if (error) {
+      return <div>error</div>
+    }
+
+    if (!data || !data.pokemon) {
+      return <div>Not found</div>
+    }
+
+    const { pokemon } = data
+
+    return (
+      <Box>
+        {pokemon.name}
+        <br />
+        {pokemon.types.join(', ')}
+      </Box>
     )
   }
 
   return (
-    <>
-      <SearchText initialValue={name} />
-      <SearchResult name={name} />
-    </>
+    <Container>
+      {renderSearchText()}
+      {renderSearchResult()}
+    </Container>
   )
 }
