@@ -1,0 +1,52 @@
+{
+  "data": {
+    "pokemon": {
+      "id": "UG9rZW1vbjowMDQ=",
+      "number": "004",
+      "name": "Charmander",
+      "weight": {
+        "minimum": "7.44kg",
+        "maximum": "9.56kg"
+      },
+      "height": {
+        "minimum": "0.53m",
+        "maximum": "0.68m"
+      },
+      "classification": "Lizard Pokémon",
+      "types": [
+        "Fire"
+      ],
+      "resistant": [
+        "Fire",
+        "Grass",
+        "Ice",
+        "Bug",
+        "Steel",
+        "Fairy"
+      ],
+      "weaknesses": [
+        "Water",
+        "Ground",
+        "Rock"
+      ],
+      "fleeRate": 0.1,
+      "maxCP": 841,
+      "maxHP": 955,
+      "image": "https://img.pokemondb.net/artwork/charmander.jpg",
+      "evolutions": [
+        {
+          "name": "Charmeleon",
+          "image": "https://img.pokemondb.net/artwork/charmeleon.jpg"
+        },
+        {
+          "name": "Charizard",
+          "image": "https://img.pokemondb.net/artwork/charizard.jpg"
+        }
+      ],
+      "evolutionRequirements": {
+        "amount": 25,
+        "name": "Charmander candies"
+      }
+    }
+  }
+}

@@ -58,7 +58,7 @@ describe("Pokemon Types", () => {
 
     await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)))
 
-    screen.getByText(new RegExp(expectedType, "i"))
+    screen.getByText(new RegExp(`Types: ${expectedType}`, "i"))
   })
 
   test.each`
@@ -83,7 +83,7 @@ describe("Pokemon Types", () => {
 
     await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)))
 
-    screen.getByText(new RegExp(expectedType, "i"))
+    screen.getByText(new RegExp(`Types: ${expectedType}`, "i"))
   })
 
   test('should render not found', async () => {

@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { gql, useLazyQuery } from '@apollo/client'
 
-import { Container, Grid, Box, Input, FormLabel, CircularProgress } from '@material-ui/core'
+import {
+  Container,
+   Grid,
+   Box,
+   Input,
+   CircularProgress,
+   Card,
+   CardMedia,
+   CardContent,
+   Typography,
+   Avatar
+} from '@material-ui/core'
 
 import { IPokemon } from '../interfaces/pokemon'
 import useQueryParams from '../hooks/useQueryParams'
 import { useHistory, useLocation } from 'react-router'
+import { Link } from 'react-router-dom'
 
 
 export const GET_POKEMON_QUERY = gql`
@@ -30,6 +42,14 @@ export const GET_POKEMON_QUERY = gql`
       maxCP
       maxHP
       image
+      evolutionRequirements {
+        amount
+        name
+      }
+      evolutions {
+        name
+        image
+      }
     }
   }
 `
@@ -117,9 +137,47 @@ export default function Search() {
 
     return (
       <Box>
-        {pokemon.name}
-        <br />
-        {pokemon.types.join(', ')}
+        <img src={pokemon.image || ""} alt={pokemon.name || ""} />
+        <Typography variant="h5" component="h2">
+          {pokemon.name}
+        </Typography>
+        <Typography variant="body2" component="p">
+          Types: {pokemon.types?.join(' ') || ""}
+        </Typography>
+        <Typography variant="body2" component="p">
+          Resistant(s): {pokemon.resistant?.join(' ') || ""}
+        </Typography>
+        <Typography variant="body2" component="p">
+          FleeRate: {pokemon.fleeRate || ""}
+        </Typography>
+        <Typography variant="body2" component="p">
+          MaxCP: {pokemon.maxCP || ""}
+        </Typography>
+        <Typography variant="body2" component="p">
+          Weakness(es): {pokemon.weaknesses?.join(' ') || '-'}
+        </Typography>
+        <Typography variant="body2" component="p">
+          Classification: {pokemon.classification || '-'}
+        </Typography>
+        <Typography variant="body2" component="p">
+          Weight: {`${pokemon.weight?.minimum} - ${pokemon.weight?.maximum}`}
+        </Typography>
+        <Typography variant="body2" component="p">
+          Height: {`${pokemon.height?.minimum} - ${pokemon.height?.maximum}`}
+        </Typography>
+        <Typography variant="body2" component="p">
+          Evolution Requirement: {`${pokemon.evolutionRequirements?.amount || ''} ${pokemon.evolutionRequirements?.name || ''}`}
+        </Typography>
+        <Typography variant="body2" component="div">
+          <Grid container>
+            Evolution(s):
+            {pokemon.evolutions?.map((evolution, i) => (
+              <Link key={`evolution-${evolution?.name}-${i}`} to={`/?name=${evolution.name}`} >
+                <Avatar alt={evolution.name || ""} src={evolution.image || ""} />
+              </Link>
+            )) || " -"}
+          </Grid>
+        </Typography>
       </Box>
     )
   }
