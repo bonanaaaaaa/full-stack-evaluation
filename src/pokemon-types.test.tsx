@@ -138,7 +138,7 @@ describe("Pokemon Types", () => {
     screen.getByText(/error/i);
   });
 
-  test("should not add more history if the input are the same", async () => {
+  test("should not add more history if the input value still the same", async () => {
     const history = createMemoryHistory();
     history.push("/");
 
