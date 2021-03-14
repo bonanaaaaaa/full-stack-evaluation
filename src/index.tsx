@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 
 import App from "./App";
+import ErrorBoundary from "./ErrorBoundary";
 import { client } from "./graphql";
 import reportWebVitals from "./reportWebVitals";
 import ThemeTypeContext from "./contexts/ThemeTypeContext";
@@ -54,7 +55,9 @@ function Root() {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Root />
+    <ErrorBoundary>
+      <Root />
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById("root")
 );
