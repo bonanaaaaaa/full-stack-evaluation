@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { gql, useLazyQuery } from '@apollo/client'
 
 import {
@@ -11,11 +11,14 @@ import {
    CardMedia,
    CardContent,
    Typography,
-   Avatar
+   Avatar,
+   Button,
+   useTheme,
 } from '@material-ui/core'
 
 import { IPokemon } from '../interfaces/pokemon'
 import useQueryParams from '../hooks/useQueryParams'
+import ThemeTypeContext from '../contexts/ThemeTypeContext'
 import { useHistory, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 
@@ -60,6 +63,7 @@ export default function Search() {
   const location = useLocation()
   const [searchTextValue, setSearchTextValue] = useState("")
   const [searchValue, setSearchValue] = useState("")
+  const {themeType, toggleThemeType} = useContext(ThemeTypeContext)
 
   const [fetch, {called, data, error, loading}] = useLazyQuery<{pokemon: IPokemon}>(GET_POKEMON_QUERY, {
     variables: { name: searchValue }
@@ -184,6 +188,7 @@ export default function Search() {
 
   return (
     <Container>
+      <Button onClick={toggleThemeType}>{themeType}</Button>
       {renderSearchText()}
       {renderSearchResult()}
     </Container>

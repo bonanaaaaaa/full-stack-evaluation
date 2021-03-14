@@ -1,34 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router } from 'react-router-dom'
-import { ThemeProvider, createMuiTheme, useMediaQuery } from '@material-ui/core'
+import { ThemeProvider, createMuiTheme, useMediaQuery, CssBaseline, PaletteType } from '@material-ui/core'
 
-import './index.css';
 import App from './App';
 import { client } from './graphql'
 import reportWebVitals from './reportWebVitals';
+import ThemeTypeContext from './contexts/ThemeTypeContext';
 
 function Root() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const [themeType, setThemeType] = useState<PaletteType>('light')
 
   const theme = React.useMemo(
     () =>
       createMuiTheme({
         palette: {
-          type: prefersDarkMode ? 'dark' : 'light',
+          type: themeType,
         },
       }),
-    [prefersDarkMode],
+    [themeType],
   );
+
+  React.useMemo(() => {
+    setThemeType(prefersDarkMode ? 'dark' : 'light')
+  }, [prefersDarkMode])
+
+  function toggleThemeType() {
+    setThemeType(themeType === 'light' ? 'dark' : 'light')
+  }
 
   return (
     <Router>
-      <ThemeProvider theme={theme}>
-        <ApolloProvider client={client}>
-          <App />
-        </ApolloProvider>
-      </ThemeProvider>
+      <ThemeTypeContext.Provider value={{ themeType, toggleThemeType }}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <ApolloProvider client={client}>
+            <App />
+          </ApolloProvider>
+        </ThemeProvider>
+      </ThemeTypeContext.Provider>
     </Router>
   )
 }
