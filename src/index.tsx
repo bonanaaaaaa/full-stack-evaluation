@@ -10,6 +10,8 @@ import {
   PaletteType,
 } from "@material-ui/core";
 
+import "./index.css";
+
 import App from "./App";
 import ErrorBoundary from "./ErrorBoundary";
 import { client } from "./graphql";

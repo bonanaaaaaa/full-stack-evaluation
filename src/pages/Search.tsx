@@ -2,15 +2,20 @@ import React, { useContext, useEffect, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 
 import {
-  Container,
-  Grid,
   Box,
-  Input,
   CircularProgress,
   Typography,
   Avatar,
-  Button,
+  AppBar,
+  InputBase,
+  Paper,
+  IconButton,
 } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import Brightness7Icon from "@material-ui/icons/Brightness7";
+import Brightness2Icon from "@material-ui/icons/Brightness2";
+
+import styles from "./Search.module.scss";
 
 import { IPokemon } from "../interfaces/pokemon";
 import useQueryParams from "../hooks/useQueryParams";
@@ -52,6 +57,18 @@ export const GET_POKEMON_QUERY = gql`
   }
 `;
 
+const DetailTypography = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <Typography variant="body2" component="p" className={className || ""}>
+    {children}
+  </Typography>
+);
+
 export default function Search() {
   const query = useQueryParams();
   const history = useHistory();
@@ -90,23 +107,29 @@ export default function Search() {
 
   function renderSearchText() {
     return (
-      <form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          name="search"
-          inputProps={{ "aria-label": "name-input" }}
-          onChange={handleChange}
-          placeholder="Pokemon name"
+      <Paper
+        component="form"
+        className={styles.searchTextRoot}
+        onSubmit={handleSubmit}
+      >
+        <InputBase
+          className={styles.searchTextInput}
+          placeholder="Search Pokemon"
+          inputProps={{
+            "aria-label": "search-button",
+            "data-testid": "search-button",
+          }}
           value={searchTextValue}
-          disabled={loading}
+          onChange={handleChange}
         />
-        <Input
+        <IconButton
           type="submit"
-          value="Search"
-          inputProps={{ "aria-label": "search-button" }}
-          disabled={loading}
-        />
-      </form>
+          aria-label="search"
+          className={styles.searchTextIconButton}
+        >
+          <SearchIcon />
+        </IconButton>
+      </Paper>
     );
   }
 
@@ -135,66 +158,90 @@ export default function Search() {
     const { pokemon } = data;
 
     return (
-      <Box>
-        <img src={pokemon.image || ""} alt={pokemon.name || ""} />
-        <Typography variant="h5" component="h2">
-          {pokemon.name}
-        </Typography>
-        <Typography variant="body2" component="p">
-          Types: {pokemon.types?.join(" ") || ""}
-        </Typography>
-        <Typography variant="body2" component="p">
-          Resistant(s): {pokemon.resistant?.join(" ") || ""}
-        </Typography>
-        <Typography variant="body2" component="p">
-          FleeRate: {pokemon.fleeRate || ""}
-        </Typography>
-        <Typography variant="body2" component="p">
-          MaxCP: {pokemon.maxCP || ""}
-        </Typography>
-        <Typography variant="body2" component="p">
-          Weakness(es): {pokemon.weaknesses?.join(" ") || "-"}
-        </Typography>
-        <Typography variant="body2" component="p">
-          Classification: {pokemon.classification || "-"}
-        </Typography>
-        <Typography variant="body2" component="p">
-          Weight: {`${pokemon.weight?.minimum} - ${pokemon.weight?.maximum}`}
-        </Typography>
-        <Typography variant="body2" component="p">
-          Height: {`${pokemon.height?.minimum} - ${pokemon.height?.maximum}`}
-        </Typography>
-        <Typography variant="body2" component="p">
-          Evolution Requirement:{" "}
-          {`${pokemon.evolutionRequirements?.amount || ""} ${
-            pokemon.evolutionRequirements?.name || ""
-          }`}
-        </Typography>
-        <Typography variant="body2" component="div">
-          <Grid container>
-            Evolution(s):
-            {pokemon.evolutions?.map((evolution, i) => (
-              <Link
-                key={`evolution-${evolution?.name}-${i}`}
-                to={`/?name=${evolution.name}`}
-              >
-                <Avatar
-                  alt={evolution.name || ""}
-                  src={evolution.image || ""}
-                />
-              </Link>
-            )) || " -"}
-          </Grid>
-        </Typography>
-      </Box>
+      <div className={styles.searchResultContainer}>
+        <div className={styles.pokemonImage}>
+          <img src={pokemon.image || ""} alt={pokemon.name || ""} />
+        </div>
+        <div className={styles.pokemonDetail}>
+          <Typography variant="h2" component="h2">
+            {pokemon.name}
+          </Typography>
+          <br />
+          <DetailTypography className="types">
+            <b>Types:</b>{" "}
+            <span data-testid="pokemon-types">
+              {pokemon.types?.join(" ") || ""}
+            </span>
+          </DetailTypography>
+          <DetailTypography>
+            <b>Resistant(s):</b> {pokemon.resistant?.join(" ") || ""}
+          </DetailTypography>
+          <DetailTypography>
+            <b>FleeRate:</b> {pokemon.fleeRate || ""}
+          </DetailTypography>
+          <DetailTypography>
+            <b>MaxCP:</b> {pokemon.maxCP || ""}
+          </DetailTypography>
+          <DetailTypography>
+            <b>Weakness(es):</b> {pokemon.weaknesses?.join(" ") || "-"}
+          </DetailTypography>
+          <DetailTypography>
+            <b>Classification:</b> {pokemon.classification || "-"}
+          </DetailTypography>
+          <DetailTypography>
+            <b>Weight:</b>{" "}
+            {`${pokemon.weight?.minimum} - ${pokemon.weight?.maximum}`}
+          </DetailTypography>
+          <DetailTypography>
+            <b>Height:</b>{" "}
+            {`${pokemon.height?.minimum} - ${pokemon.height?.maximum}`}
+          </DetailTypography>
+          <DetailTypography>
+            <b>Evolution Requirement:</b>{" "}
+            {`${pokemon.evolutionRequirements?.amount || ""} ${
+              pokemon.evolutionRequirements?.name || ""
+            }`}
+          </DetailTypography>
+          <div className={styles.evolutions}>
+            <b>Evolution(s):</b>
+            <div className={styles.pokemonAvatarContainer}>
+              {pokemon.evolutions?.map((evolution, i) => (
+                <div className={styles.pokemonAvatar}>
+                  <Link
+                    key={`evolution-${evolution?.name}-${i}`}
+                    to={`/?name=${evolution.name}`}
+                  >
+                    <Avatar
+                      alt={evolution.name || ""}
+                      src={evolution.image || ""}
+                    />
+                  </Link>
+                </div>
+              )) || " -"}
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Container>
-      <Button onClick={toggleThemeType}>{themeType}</Button>
-      {renderSearchText()}
-      {renderSearchResult()}
-    </Container>
+    <>
+      <AppBar>
+        <div className={styles.appBarContainer}>
+          <div className={styles.search}>{renderSearchText()}</div>
+          <div className={styles.themeToggle}>
+            <IconButton onClick={toggleThemeType}>
+              {themeType === "light" ? (
+                <Brightness7Icon />
+              ) : (
+                <Brightness2Icon />
+              )}
+            </IconButton>
+          </div>
+        </div>
+      </AppBar>
+      <div className={styles.searchResultWrapper}>{renderSearchResult()}</div>
+    </>
   );
 }

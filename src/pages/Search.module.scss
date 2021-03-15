@@ -1,0 +1,84 @@
+.appBarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search {
+  margin-left: 20px;
+}
+
+.themeToggle {
+  margin-left: auto;
+}
+
+.searchTextRoot {
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  width: 200px;
+  height: 30px;
+}
+
+.searchTextInput {
+  margin-left: 7px;
+  flex: 1;
+}
+
+.searchTextIconButton {
+  padding: 10px;
+}
+
+.searchResultWrapper {
+  padding-top: 80px;
+}
+
+.searchResultContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.pokemonImage {
+  margin: 5px;
+
+  img {
+    border-radius: 20px;
+    border: 1px solid #000;
+    max-width: 100%;
+  }
+}
+
+.pokemonDetail {
+  margin: 10px;
+}
+
+.evolutions {
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.pokemonAvatarContainer {
+  display: flex;
+}
+
+.pokemonAvatar {
+  margin: 0 3px;
+}
+
+@media (max-width: 768px) {
+  .searchResultContainer {
+    flex-direction: column;
+    padding: 0 10px;
+  }
+
+  .pokemonImage {
+    margin: 0;
+  }
+
+  .pokemonDetail {
+    margin: 0;
+  }
+}
