@@ -10,13 +10,13 @@ import {
   PaletteType,
 } from "@material-ui/core";
 
-import "./index.css";
+import "index.css";
 
-import App from "./App";
-import ErrorBoundary from "./ErrorBoundary";
-import { client } from "./graphql";
-import reportWebVitals from "./reportWebVitals";
-import ThemeTypeContext from "./contexts/ThemeTypeContext";
+import App from "App";
+import ErrorBoundary from "ErrorBoundary";
+import client from "graphql/client";
+import reportWebVitals from "reportWebVitals";
+import ThemeTypeContext from "contexts/ThemeTypeContext";
 
 function Root() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");

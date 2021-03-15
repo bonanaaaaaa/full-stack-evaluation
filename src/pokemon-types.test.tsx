@@ -1,11 +1,24 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  RenderResult,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 
-import mocks from "./mocks";
-import App from "./App";
-import ErrorBoundary from "./ErrorBoundary";
+import mocks from "mocks";
+import App from "App";
+import ErrorBoundary from "ErrorBoundary";
+
+function fillAndSearch(utils: RenderResult, value: string) {
+  fireEvent.change(utils.getByTestId("name-input"), {
+    target: { value },
+  });
+  fireEvent.click(utils.getByTestId("search-button"));
+}
 
 describe("Pokemon Types", () => {
   test("should render no input message", async () => {
@@ -86,10 +99,11 @@ describe("Pokemon Types", () => {
         </Router>
       );
 
-      fireEvent.change(utils.getByLabelText("name-input"), {
-        target: { value: pokemonName },
-      });
-      fireEvent.click(utils.getByLabelText("search-button"));
+      // fireEvent.change(utils.getByTestId("name-input"), {
+      //   target: { value: pokemonName },
+      // });
+      // fireEvent.click(utils.getByTestId("search-button"));
+      fillAndSearch(utils, pokemonName);
 
       await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
@@ -111,10 +125,11 @@ describe("Pokemon Types", () => {
       </Router>
     );
 
-    const input = utils.getByLabelText("name-input");
-
-    fireEvent.change(input, { target: { value: "unknown" } });
-    fireEvent.click(utils.getByText("Search"));
+    // fireEvent.change(utils.getByTestId("name-input"), {
+    //   target: { value: "unknown" },
+    // });
+    // fireEvent.click(utils.getByTestId("search-button"));
+    fillAndSearch(utils, "unknown");
 
     await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
@@ -139,10 +154,11 @@ describe("Pokemon Types", () => {
       </ErrorBoundary>
     );
 
-    const input = utils.getByLabelText("name-input");
-
-    fireEvent.change(input, { target: { value: "error" } });
-    fireEvent.click(utils.getByText("Search"));
+    // fireEvent.change(utils.getByTestId("name-input"), {
+    //   target: { value: "error" },
+    // });
+    // fireEvent.click(utils.getByTestId("search-button"));
+    fillAndSearch(utils, "error");
 
     await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
@@ -162,16 +178,12 @@ describe("Pokemon Types", () => {
         </MockedProvider>
       </Router>
     );
-
-    fireEvent.change(utils.getByLabelText("name-input"), {
-      target: { value: "Bulbasaur" },
-    });
-    fireEvent.click(utils.getByLabelText("search-button"));
+    fillAndSearch(utils, "Bulbasaur");
 
     await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
     const currentHistoryLength = history.length;
 
-    fireEvent.click(utils.getByLabelText("search-button"));
+    fillAndSearch(utils, "Bulbasaur");
     await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
     expect(currentHistoryLength).toEqual(history.length);

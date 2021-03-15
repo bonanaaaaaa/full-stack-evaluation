@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
+import { useHistory, useLocation } from "react-router";
+import { Link } from "react-router-dom";
 
 import {
   Box,
@@ -15,13 +17,11 @@ import SearchIcon from "@material-ui/icons/Search";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import Brightness2Icon from "@material-ui/icons/Brightness2";
 
-import styles from "./Search.module.scss";
+import styles from "pages/Search.module.scss";
 
-import { IPokemon } from "../interfaces/pokemon";
-import useQueryParams from "../hooks/useQueryParams";
-import ThemeTypeContext from "../contexts/ThemeTypeContext";
-import { useHistory, useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { IPokemon } from "interfaces/pokemon";
+import useQueryParams from "hooks/useQueryParams";
+import ThemeTypeContext from "contexts/ThemeTypeContext";
 
 export const GET_POKEMON_QUERY = gql`
   query pokemon($name: String!) {
@@ -116,8 +116,7 @@ export default function Search() {
           className={styles.searchTextInput}
           placeholder="Search Pokemon"
           inputProps={{
-            "aria-label": "search-button",
-            "data-testid": "search-button",
+            "data-testid": "name-input",
           }}
           value={searchTextValue}
           onChange={handleChange}
@@ -126,6 +125,7 @@ export default function Search() {
           type="submit"
           aria-label="search"
           className={styles.searchTextIconButton}
+          data-testid="search-button"
         >
           <SearchIcon />
         </IconButton>
@@ -206,11 +206,11 @@ export default function Search() {
             <b>Evolution(s):</b>
             <div className={styles.pokemonAvatarContainer}>
               {pokemon.evolutions?.map((evolution, i) => (
-                <div className={styles.pokemonAvatar}>
-                  <Link
-                    key={`evolution-${evolution?.name}-${i}`}
-                    to={`/?name=${evolution.name}`}
-                  >
+                <div
+                  className={styles.pokemonAvatar}
+                  key={`evolution-${evolution?.name}-${i}`}
+                >
+                  <Link to={`/?name=${evolution.name}`}>
                     <Avatar
                       alt={evolution.name || ""}
                       src={evolution.image || ""}

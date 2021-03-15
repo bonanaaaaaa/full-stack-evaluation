@@ -1,7 +1,7 @@
-import { GET_POKEMON_QUERY } from "../pages/Search";
-import bulbasaur from "./bulbasaur.json";
-import squirtle from "./squirtle.json";
-import charmander from "./charmander.json";
+import { GET_POKEMON_QUERY } from "pages/Search";
+import bulbasaur from "mocks/bulbasaur.json";
+import squirtle from "mocks/squirtle.json";
+import charmander from "mocks/charmander.json";
 
 const mocks = [
   {
