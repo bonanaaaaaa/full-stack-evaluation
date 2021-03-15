@@ -33,7 +33,7 @@ describe("Pokemon Types", () => {
       </Router>
     );
 
-    await waitFor(() => screen.getByText("Input pokemon name to search"));
+    await waitFor(() => screen.getByTestId("search-center-input"));
   });
 
   test("should render searching", async () => {
@@ -99,10 +99,6 @@ describe("Pokemon Types", () => {
         </Router>
       );
 
-      // fireEvent.change(utils.getByTestId("name-input"), {
-      //   target: { value: pokemonName },
-      // });
-      // fireEvent.click(utils.getByTestId("search-button"));
       fillAndSearch(utils, pokemonName);
 
       await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
@@ -125,15 +121,13 @@ describe("Pokemon Types", () => {
       </Router>
     );
 
-    // fireEvent.change(utils.getByTestId("name-input"), {
-    //   target: { value: "unknown" },
-    // });
-    // fireEvent.click(utils.getByTestId("search-button"));
     fillAndSearch(utils, "unknown");
 
     await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
-    screen.getByText(/not found/i);
+    expect(screen.queryByTestId("not-found")).toHaveTextContent(
+      'Pokemon name "unknown" cannot be found'
+    );
   });
 
   test("should throw an error", async () => {
@@ -154,10 +148,6 @@ describe("Pokemon Types", () => {
       </ErrorBoundary>
     );
 
-    // fireEvent.change(utils.getByTestId("name-input"), {
-    //   target: { value: "error" },
-    // });
-    // fireEvent.click(utils.getByTestId("search-button"));
     fillAndSearch(utils, "error");
 
     await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));

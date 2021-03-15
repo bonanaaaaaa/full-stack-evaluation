@@ -4,7 +4,6 @@ import { useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
 
 import {
-  Box,
   CircularProgress,
   Typography,
   Avatar,
@@ -16,6 +15,7 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import Brightness2Icon from "@material-ui/icons/Brightness2";
+import ClearIcon from "@material-ui/icons/Clear";
 
 import styles from "pages/Search.module.scss";
 
@@ -76,9 +76,10 @@ export default function Search() {
   const queryValue = query.get("name");
   const [searchTextValue, setSearchTextValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [isDirty, setIsDirty] = useState(false);
   const { themeType, toggleThemeType } = useContext(ThemeTypeContext);
 
-  const [fetch, { called, data, error, loading }] = useLazyQuery<{
+  const [fetch, { data, error, loading }] = useLazyQuery<{
     pokemon: IPokemon;
   }>(GET_POKEMON_QUERY, {
     variables: { name: searchValue },
@@ -89,6 +90,11 @@ export default function Search() {
       setSearchTextValue(queryValue);
       setSearchValue(queryValue);
       fetch();
+      setIsDirty(true);
+    } else {
+      setSearchTextValue("");
+      setSearchValue("");
+      setIsDirty(false);
     }
   }, [location, fetch, queryValue]);
 
@@ -106,6 +112,10 @@ export default function Search() {
   }
 
   function renderSearchText() {
+    if (!isDirty) {
+      return null;
+    }
+
     return (
       <Paper
         component="form"
@@ -134,16 +144,20 @@ export default function Search() {
   }
 
   function renderSearchResult() {
-    if (!called) {
-      return <div>Input pokemon name to search</div>;
+    if (!isDirty) {
+      return null;
     }
 
     if (loading) {
       return (
-        <Box>
-          Searching...
-          <CircularProgress />
-        </Box>
+        <div className={styles.notFoundWrapper}>
+          <div className={styles.notFound}>
+            <CircularProgress />
+            <Typography variant="overline" component="p">
+              Searching...
+            </Typography>
+          </div>
+        </div>
       );
     }
 
@@ -152,7 +166,16 @@ export default function Search() {
     }
 
     if (!data || !data.pokemon) {
-      return <div>Not found</div>;
+      return (
+        <div className={styles.notFoundWrapper} data-testid="not-found">
+          <div className={styles.notFound}>
+            <ClearIcon />
+            <Typography variant="overline" component="p">
+              {`Pokemon name "${searchTextValue}" cannot be found`}
+            </Typography>
+          </div>
+        </div>
+      );
     }
 
     const { pokemon } = data;
@@ -242,6 +265,38 @@ export default function Search() {
         </div>
       </AppBar>
       <div className={styles.searchResultWrapper}>{renderSearchResult()}</div>
+      {!isDirty ? (
+        <div
+          className={styles.notCalledWrapper}
+          data-testid="search-center-input"
+        >
+          <div className={styles.notCalled}>
+            <Paper
+              component="form"
+              className={styles.searchTextRootInContent}
+              onSubmit={handleSubmit}
+            >
+              <InputBase
+                className={styles.searchTextInput}
+                placeholder="Search Pokemon"
+                inputProps={{
+                  "data-testid": "name-input",
+                }}
+                value={searchTextValue}
+                onChange={handleChange}
+              />
+              <IconButton
+                type="submit"
+                aria-label="search"
+                className={styles.searchTextIconButton}
+                data-testid="search-button"
+              >
+                <SearchIcon />
+              </IconButton>
+            </Paper>
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }
