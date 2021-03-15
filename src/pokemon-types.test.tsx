@@ -5,6 +5,7 @@ import { Router } from "react-router-dom";
 
 import mocks from "./mocks";
 import App from "./App";
+import ErrorBoundary from "./ErrorBoundary";
 
 describe("Pokemon Types", () => {
   test("should render no input message", async () => {
@@ -30,7 +31,7 @@ describe("Pokemon Types", () => {
 
     render(
       <Router history={history}>
-        <MockedProvider mocks={[]} addTypename={false}>
+        <MockedProvider mocks={mocks} addTypename={false}>
           <App />
         </MockedProvider>
       </Router>
@@ -60,7 +61,9 @@ describe("Pokemon Types", () => {
 
       await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
-      screen.getByText(new RegExp(`Types: ${expectedType}`, "i"));
+      expect(screen.queryByTestId("pokemon-types")).toHaveTextContent(
+        expectedType
+      );
     }
   );
 
@@ -90,7 +93,9 @@ describe("Pokemon Types", () => {
 
       await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
-      screen.getByText(new RegExp(`Types: ${expectedType}`, "i"));
+      expect(screen.queryByTestId("pokemon-types")).toHaveTextContent(
+        expectedType
+      );
     }
   );
 
@@ -116,16 +121,22 @@ describe("Pokemon Types", () => {
     screen.getByText(/not found/i);
   });
 
-  test("should render error", async () => {
+  test("should throw an error", async () => {
     const history = createMemoryHistory();
     history.push("/");
 
+    const spyConsole = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
     const utils = render(
-      <Router history={history}>
-        <MockedProvider mocks={mocks} addTypename={false}>
-          <App />
-        </MockedProvider>
-      </Router>
+      <ErrorBoundary>
+        <Router history={history}>
+          <MockedProvider mocks={mocks} addTypename={false}>
+            <App />
+          </MockedProvider>
+        </Router>
+      </ErrorBoundary>
     );
 
     const input = utils.getByLabelText("name-input");
@@ -135,7 +146,9 @@ describe("Pokemon Types", () => {
 
     await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
 
-    screen.getByText(/error/i);
+    screen.getByText(/there was an error/i);
+
+    expect(spyConsole).toBeCalled();
   });
 
   test("should not add more history if the input value still the same", async () => {

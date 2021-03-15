@@ -125,7 +125,7 @@ export default function Search() {
     }
 
     if (error) {
-      return <div>error</div>;
+      throw error;
     }
 
     if (!data || !data.pokemon) {
