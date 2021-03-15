@@ -180,6 +180,17 @@ export default function Search() {
 
     const { pokemon } = data;
 
+    const getEvolutionRequirementsText = (pokemon: IPokemon) => {
+      const amount = pokemon.evolutionRequirements?.amount;
+      const name = pokemon.evolutionRequirements?.name;
+
+      if (amount && name) {
+        return `${amount} ${name}`;
+      } else {
+        return "None";
+      }
+    };
+
     return (
       <div className={styles.searchResultContainer}>
         <div className={styles.pokemonImage}>
@@ -221,12 +232,11 @@ export default function Search() {
           </DetailTypography>
           <DetailTypography>
             <b>Evolution Requirement:</b>{" "}
-            {`${pokemon.evolutionRequirements?.amount || ""} ${
-              pokemon.evolutionRequirements?.name || ""
-            }`}
+            {getEvolutionRequirementsText(pokemon)}
           </DetailTypography>
           <div className={styles.evolutions}>
             <b>Evolution(s):</b>
+            &nbsp;
             <div className={styles.pokemonAvatarContainer}>
               {pokemon.evolutions?.map((evolution, i) => (
                 <div
@@ -240,7 +250,7 @@ export default function Search() {
                     />
                   </Link>
                 </div>
-              )) || " -"}
+              )) || "None"}
             </div>
           </div>
         </div>
