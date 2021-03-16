@@ -23,6 +23,8 @@ import { IPokemon } from "interfaces/pokemon";
 import useQueryParams from "hooks/useQueryParams";
 import ThemeTypeContext from "contexts/ThemeTypeContext";
 
+const ROOT_PATH = process.env.PUBLIC_URL || "";
+
 export const GET_POKEMON_QUERY = gql`
   query pokemon($name: String!) {
     pokemon(name: $name) {
@@ -106,7 +108,7 @@ export default function Search() {
     e.preventDefault();
 
     if (searchTextValue !== searchValue) {
-      history.push(`/?name=${searchTextValue}`);
+      history.push(`${ROOT_PATH}/?name=${searchTextValue}`);
     }
     setSearchValue(searchTextValue);
   }
@@ -243,7 +245,7 @@ export default function Search() {
                   className={styles.pokemonAvatar}
                   key={`evolution-${evolution?.name}-${i}`}
                 >
-                  <Link to={`/?name=${evolution.name}`}>
+                  <Link to={`${ROOT_PATH}/?name=${evolution.name}`}>
                     <Avatar
                       alt={evolution.name || ""}
                       src={evolution.image || ""}
