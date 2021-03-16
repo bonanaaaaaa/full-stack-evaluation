@@ -1,0 +1,76 @@
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { ApolloProvider } from '@apollo/client';
+import { BrowserRouter as Router } from 'react-router-dom';
+import {
+  ThemeProvider,
+  createMuiTheme,
+  useMediaQuery,
+  CssBaseline,
+  PaletteType,
+} from '@material-ui/core';
+
+import '@app/index.css';
+
+import App from '@app/App';
+import ErrorBoundary from '@app/ErrorBoundary';
+import client from '@app/graphql/client';
+import reportWebVitals from '@app/reportWebVitals';
+import ThemeTypeContext from '@app/contexts/ThemeTypeContext';
+
+function Root() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  const [themeType, setThemeType] = useState<PaletteType>('light');
+
+  const theme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: themeType,
+        },
+      }),
+    [themeType],
+  );
+
+  React.useMemo(() => {
+    setThemeType(prefersDarkMode ? 'dark' : 'light');
+  }, [prefersDarkMode]);
+
+  function toggleThemeType() {
+    setThemeType(themeType === 'light' ? 'dark' : 'light');
+  }
+
+  return (
+    <Router>
+      <ThemeTypeContext.Provider value={{ themeType, toggleThemeType }}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <ApolloProvider client={client}>
+            <App />
+          </ApolloProvider>
+        </ThemeProvider>
+      </ThemeTypeContext.Provider>
+    </Router>
+  );
+}
+
+ReactDOM.render(
+  <React.StrictMode>
+    <ErrorBoundary>
+      <Root />
+    </ErrorBoundary>
+  </React.StrictMode>,
+  document.getElementById('root'),
+);
+
+// Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
+// Learn more: https://www.snowpack.dev/concepts/hot-module-replacement
+if (import.meta.hot) {
+  import.meta.hot.accept();
+}
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
