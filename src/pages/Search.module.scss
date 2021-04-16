@@ -1,11 +1,19 @@
+:root {
+  --app-bar-height: 60px;
+}
+
 .appBarContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  height: var(--app-bar-height);
 }
 
 .search {
-  margin-left: 20px;
+  margin-left: 1.25em;
+
+  padding: 0.5em 0;
 }
 
 .themeToggle {
@@ -13,33 +21,28 @@
 }
 
 .searchTextRoot {
-  padding: 2px 4px;
+  padding: 0 0.5em;
   display: flex;
   align-items: center;
-  width: 200px;
-  height: 30px;
+  width: 100%;
+  max-width: 200px;
 }
 
 .searchTextRootInContent {
-  padding: 2px 4px;
+  padding: 0.3em 1.5em;
   display: flex;
   align-items: center;
-  width: 400px;
-  height: 60px;
+  width: 100%;
+  max-width: 400px;
 }
 
 .searchTextInput {
-  margin-left: 7px;
+  margin-left: 0.1em;
   flex: 1;
 }
 
 .searchTextIconButton {
-  padding: 10px;
-}
-
-.searchResultWrapper {
-  padding-top: 80px;
-  min-height: 100vh;
+  padding: 0.5em;
 }
 
 .searchResultContainer {
@@ -47,20 +50,26 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+
+  padding: 1.5em;
+
+  max-width: 1000px;
+
+  margin: var(--app-bar-height) auto 0;
 }
 
 .pokemonImage {
-  margin: 5px;
-
   img {
     border-radius: 20px;
     border: 1px solid #000;
     max-width: 100%;
   }
+
+  padding: 1em;
 }
 
 .pokemonDetail {
-  margin: 10px;
+  padding: 1em;
 }
 
 .evolutions {
@@ -74,30 +83,15 @@
 }
 
 .pokemonAvatar {
-  margin: 0 3px;
+  margin: 0 0.5em;
 }
 
-@media (max-width: 768px) {
-  .searchResultContainer {
-    flex-direction: column;
-    padding: 0 10px;
-  }
+.contentContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .pokemonImage {
-    margin: 0;
-  }
-
-  .pokemonDetail {
-    margin: 0;
-  }
-}
-
-.loadingWrapper,
-.notFoundWrapper,
-.notCalledWrapper {
-  margin: auto;
-  width: 100%;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .loading,
@@ -106,9 +100,10 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+}
 
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+@media (max-width: 768px) {
+  .searchResultContainer {
+    flex-direction: column;
+  }
 }

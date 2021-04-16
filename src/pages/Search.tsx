@@ -25,6 +25,28 @@ import ThemeTypeContext from "contexts/ThemeTypeContext";
 
 const ROOT_PATH = process.env.PUBLIC_URL || "";
 
+type PokemonEvolution = Pick<IPokemon, "name" | "image"> | null;
+
+type Pokemon = Pick<
+  IPokemon,
+  | "id"
+  | "number"
+  | "name"
+  | "weight"
+  | "height"
+  | "classification"
+  | "types"
+  | "resistant"
+  | "weaknesses"
+  | "fleeRate"
+  | "maxCP"
+  | "maxHP"
+  | "image"
+  | "evolutionRequirements"
+>;
+
+type Response = Pokemon & PokemonEvolution;
+
 export const GET_POKEMON_QUERY = gql`
   query pokemon($name: String!) {
     pokemon(name: $name) {
@@ -119,29 +141,31 @@ export default function Search() {
     }
 
     return (
-      <Paper
-        component="form"
-        className={styles.searchTextRoot}
-        onSubmit={handleSubmit}
-      >
-        <InputBase
-          className={styles.searchTextInput}
-          placeholder="Search Pokemon"
-          inputProps={{
-            "data-testid": "name-input",
-          }}
-          value={searchTextValue}
-          onChange={handleChange}
-        />
-        <IconButton
-          type="submit"
-          aria-label="search"
-          className={styles.searchTextIconButton}
-          data-testid="search-button"
+      <div className={styles.search}>
+        <Paper
+          component="form"
+          className={styles.searchTextRoot}
+          onSubmit={handleSubmit}
         >
-          <SearchIcon />
-        </IconButton>
-      </Paper>
+          <InputBase
+            className={styles.searchTextInput}
+            placeholder="Search Pokemon"
+            inputProps={{
+              "data-testid": "name-input",
+            }}
+            value={searchTextValue}
+            onChange={handleChange}
+          />
+          <IconButton
+            type="submit"
+            aria-label="search"
+            className={styles.searchTextIconButton}
+            data-testid="search-button"
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+      </div>
     );
   }
 
@@ -152,7 +176,7 @@ export default function Search() {
 
     if (loading) {
       return (
-        <div className={styles.notFoundWrapper}>
+        <div className={styles.contentContainer}>
           <div className={styles.notFound}>
             <CircularProgress />
             <Typography variant="overline" component="p">
@@ -169,7 +193,7 @@ export default function Search() {
 
     if (!data || !data.pokemon) {
       return (
-        <div className={styles.notFoundWrapper} data-testid="not-found">
+        <div className={styles.contentContainer} data-testid="not-found">
           <div className={styles.notFound}>
             <ClearIcon />
             <Typography variant="overline" component="p">
@@ -182,7 +206,7 @@ export default function Search() {
 
     const { pokemon } = data;
 
-    const getEvolutionRequirementsText = (pokemon: IPokemon) => {
+    const getEvolutionRequirementsText = (pokemon: Response) => {
       const amount = pokemon.evolutionRequirements?.amount;
       const name = pokemon.evolutionRequirements?.name;
 
@@ -264,7 +288,7 @@ export default function Search() {
     <>
       <AppBar>
         <div className={styles.appBarContainer}>
-          <div className={styles.search}>{renderSearchText()}</div>
+          {renderSearchText()}
           <div className={styles.themeToggle}>
             <IconButton onClick={toggleThemeType}>
               {themeType === "light" ? (
@@ -276,12 +300,9 @@ export default function Search() {
           </div>
         </div>
       </AppBar>
-      <div className={styles.searchResultWrapper}>{renderSearchResult()}</div>
+      {renderSearchResult()}
       {!isDirty ? (
-        <div
-          className={styles.notCalledWrapper}
-          data-testid="search-center-input"
-        >
+        <div className={styles.contentContainer}>
           <div className={styles.notCalled}>
             <Paper
               component="form"
