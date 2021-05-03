@@ -302,7 +302,10 @@ export default function Search() {
       </AppBar>
       {renderSearchResult()}
       {!isDirty ? (
-        <div className={styles.contentContainer}>
+        <div
+          className={styles.contentContainer}
+          data-testid="search-center-container"
+        >
           <div className={styles.notCalled}>
             <Paper
               component="form"

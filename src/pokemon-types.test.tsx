@@ -33,7 +33,7 @@ describe("Pokemon Types", () => {
       </Router>
     );
 
-    await waitFor(() => screen.getByTestId("search-center-input"));
+    await waitFor(() => screen.getByTestId("search-center-container"));
   });
 
   test("should render searching", async () => {
