@@ -1,0 +1,40 @@
+name: Deploy to GitHub Page
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install Packages
+      run: yarn install
+
+    - name: Build page
+      run: yarn build
+      env:
+        PUBLIC_URL: "/full-stack-evaluation"
+
+    - name: Deploy to gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.GHA_DEPLOY_SECRET_KEY }}
+        publish_dir: ./build
