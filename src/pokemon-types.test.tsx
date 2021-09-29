@@ -72,7 +72,7 @@ describe("Pokemon Types", () => {
         </Router>
       );
 
-      await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
+      await waitFor(() => new Promise((resolve) => setTimeout(resolve, 10)));
 
       expect(screen.queryByTestId("pokemon-types")).toHaveTextContent(
         expectedType
@@ -101,7 +101,7 @@ describe("Pokemon Types", () => {
 
       fillAndSearch(utils, pokemonName);
 
-      await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
+      await waitFor(() => new Promise((resolve) => setTimeout(resolve, 10)));
 
       expect(screen.queryByTestId("pokemon-types")).toHaveTextContent(
         expectedType
@@ -123,7 +123,7 @@ describe("Pokemon Types", () => {
 
     fillAndSearch(utils, "unknown");
 
-    await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
+    await waitFor(() => new Promise((resolve) => setTimeout(resolve, 10)));
 
     expect(screen.queryByTestId("not-found")).toHaveTextContent(
       'Pokemon name "unknown" cannot be found'
@@ -150,7 +150,7 @@ describe("Pokemon Types", () => {
 
     fillAndSearch(utils, "error");
 
-    await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
+    await waitFor(() => new Promise((resolve) => setTimeout(resolve, 10)));
 
     screen.getByText(/there was an error/i);
 
@@ -170,11 +170,11 @@ describe("Pokemon Types", () => {
     );
     fillAndSearch(utils, "Bulbasaur");
 
-    await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
+    await waitFor(() => new Promise((resolve) => setTimeout(resolve, 10)));
     const currentHistoryLength = history.length;
 
     fillAndSearch(utils, "Bulbasaur");
-    await waitFor(() => new Promise((resolve) => setTimeout(resolve, 0)));
+    await waitFor(() => new Promise((resolve) => setTimeout(resolve, 10)));
 
     expect(currentHistoryLength).toEqual(history.length);
   });
